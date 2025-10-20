@@ -1,0 +1,42 @@
+import java.io.*;
+import java.util.*;
+
+public class Region{
+   public static void main(String[] args) {
+       try {
+           File file = new File("C:\\temp\\EVE01Sales.txt");
+           Scanner sc = new Scanner(file);
+           HashMap<String, Integer> regionName = new HashMap<>();
+
+           if(sc.hasNextLine()){
+            sc.nextLine();
+           }
+
+           while(sc.hasNextLine()){
+            String line = sc.nextLine().trim();
+
+            String[] fields = line.split("\t");
+
+            String region = fields[1];
+            int qty = Integer.parseInt(fields[4]);
+            int uPrice = Integer.parseInt(fields[5]);
+
+            int amount = qty*uPrice;
+
+            if(!regionName.containsKey(region)){
+                regionName.put(region, 0);
+                regionName.put(region, regionName.get(region) + amount);
+            }
+           }
+
+           System.out.println("Region-Wise Sales: \n");
+           for(String it : regionName.keySet()){
+            System.out.println(it + " : " + regionName.get(it));
+           }
+
+
+       } catch (IOException e) {
+        System.out.println("Error reading file");
+       }
+   }
+}
