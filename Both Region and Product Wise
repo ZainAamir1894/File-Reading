@@ -1,0 +1,55 @@
+import java.io.*;
+import java.util.*;
+
+public class RegionAndProduct{
+   public static void main(String[] args) {
+       try {
+           File file = new File("C:\\temp\\EVE01Sales.txt");
+           Scanner sc = new Scanner(file);
+           HashMap<String, Integer> regionName = new HashMap<>();
+           HashMap<String, Integer> prod = new HashMap<>();
+
+           if(sc.hasNextLine()){
+            sc.nextLine();
+           }
+
+           while(sc.hasNextLine()){
+            String line = sc.nextLine().trim();
+
+            String[] fields = line.split("\t");
+
+            String region = fields[1];
+            String productName = fields[3];
+            int qty = Integer.parseInt(fields[4]);
+            int uPrice = Integer.parseInt(fields[5]);
+
+            int amount = qty*uPrice;
+
+            while(!regionName.containsKey(region) && !prod.containsKey(productName)){
+
+                //for region name
+                regionName.put(region, 0);
+                regionName.put(region, regionName.get(region) + amount);
+
+                //for product name
+                prod.put(productName, 0);
+                prod.put(productName, prod.get(productName) + amount);
+            }
+           }
+
+           System.out.println("Region-Wise Sales: \n");
+           for(String it : regionName.keySet()){
+            System.out.println(it + " : " + regionName.get(it));
+           }
+
+           System.out.println("Product Wise Sales: \n");
+           for(String ab : prod.keySet()){
+            System.out.println(prod + " : " + prod.get(ab));
+           }
+
+
+       } catch (IOException e) {
+        System.out.println("Error reading file");
+       }
+   }
+}
