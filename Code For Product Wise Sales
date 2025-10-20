@@ -1,45 +1,51 @@
+/*
+0 - Date
+1 - Region
+2 - Rep ID
+3 - Product
+4 - Qty
+5 - Unit Price
+*/
 import java.io.*;
 import java.util.*;
 
-public class Sales {
+public class AnotherSales{
     public static void main(String[] args) {
-        try {
-            File file = new File("C:\\java\\EVE01Sales.txt");
+        try{
+            //File Handling
+            File file = new File("C:\\temp\\EVE01Sales.txt");
             Scanner sc = new Scanner(file);
-
             HashMap<String, Integer> prod = new HashMap<>();
 
-            // Skip the header line
-            if (sc.hasNextLine()) {
+            //Inside the file
+            if(sc.hasNextLine()){
                 sc.nextLine();
             }
 
-            while (sc.hasNextLine()) {
-                String line = sc.nextLine();
-                String[] arr = line.split("\t");
+            while(sc.hasNextLine()){
+                String line = sc.nextLine().trim();
 
-                String productName = arr[4];
-                int quantity = Integer.parseInt(arr[5]);
-                int price = Integer.parseInt(arr[6]);
+                String[] fields = line.split("\t");
 
-                int total = quantity * price;
+                String productName = fields[3];
+                int quantity = Integer.parseInt(fields[4]);
+                int uPrice = Integer.parseInt(fields[5]);
 
-                // Add to existing total or start at 0
-                prod.put(productName, prod.getOrDefault(productName, 0) + total);
+                int amount = quantity*uPrice;
+
+                if(!prod.containsKey(productName)){
+                    prod.put(productName, 0);
+                    prod.put(productName, prod.get(productName) + amount);
+                }
             }
 
-            for (String pr : prod.keySet()) {
-                System.out.println(pr + " : " + prod.get(pr));
+            System.out.println("Product-Wise Sales: \n");
+            for(String it : prod.keySet()){
+                System.out.println(it + " : " + prod.get(it));
             }
 
-            sc.close();
-
-        } catch (IOException e) {
-            System.out.println("File not found or error reading file.");
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.out.println("Error parsing numbers from file.");
-            e.printStackTrace();
+        } catch(IOException e){
+            System.out.println("Error reading file.");
         }
     }
 }
