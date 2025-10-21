@@ -1,0 +1,44 @@
+import java.io.*;
+import java.util.*;
+
+public class MonthWise{
+    public static void main(String[] args) {
+        try{
+            File file = new File("C:\\temp\\EVE01Sales.txt");
+            Scanner sc = new Scanner(file);
+            HashMap<String, Integer> monthMap = new HashMap<>();
+
+            if(sc.hasNextLine()){
+                sc.nextLine();
+            }
+
+            while(sc.hasNextLine()){
+                String line = sc.nextLine().trim();
+                String[] fields = line.split("\t");
+
+                String date = fields[0];
+                int qty = Integer.parseInt(fields[4]);
+                int uPrice = Integer.parseInt(fields[5]);
+                int amount = qty * uPrice;
+
+                String month = date.split("-")[1];
+                
+                if(!monthMap.containsKey(month)){
+                    monthMap.put(month, 0);
+                
+                } else{
+                    monthMap.put(month, monthMap.get(month) + amount);
+                }
+            }
+
+            sc.close();
+            System.out.println("MONTH-WISE SALES: ");
+
+            for(String it : monthMap.keySet()){
+                System.out.println(monthMap + " : " + monthMap.get(it));
+            }
+        } catch (IOException e){
+            System.out.println("Error reading file");
+        }
+    }
+}
