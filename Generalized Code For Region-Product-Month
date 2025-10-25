@@ -1,0 +1,66 @@
+// For Zain: Save File in java folder on desktop before compiling
+
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args){
+        try{
+            File file = new File("C:\\temp\\EVE01Sales.txt");
+            Scanner sc = new Scanner(file);
+            HashMap<String, Integer> region = new HashMap<>();
+            HashMap<String, Integer> prod = new HashMap<>();
+            HashMap<String, Integer> date = new HashMap<>();
+            
+            handleFile(sc, region, prod, date); // file handling through a function, called in main
+            
+            System.out.println("Region-Wise Sales: ");
+            printSale(region);
+            System.out.println("Product-Wise Sales: ");
+            printSale(prod);
+            System.out.println("Month-Wise Sales: ");
+            printSale(date);
+            
+            
+        } catch (IOException e){
+            System.out.println("Error Reading File.");
+        }
+    }
+    
+    public static void handleFile(Scanner sc, HashMap<String, Integer> region, HashMap<String, Integer> prod, HashMap<String, Integer> date){
+        
+        if(sc.hasNextLine()){
+            sc.nextLine();
+        }
+        
+        while(sc.hasNextLine()){
+            String line = sc.nextLine().trim();
+            
+            String[] fields = line.split("\t");
+            String month =  fields[0];
+            String hDate = month.split("-")[1];
+            String regionName = fields[1];
+            String productName = fields[3];
+            int qty = Integer.parseInt(fields[4]);
+            int uPrice = Integer.parseInt(fields[5]);
+            int amount = qty * uPrice;
+            
+            handleSale(region, amount, regionName);
+            handleSale(prod, amount, productName);
+            handleSale(date, amount, month);
+        }
+    }
+    
+    public static void handleSale(HashMap<String, Integer> map, int amount, String key){
+        if(!map.containsKey(key)){
+            map.put(key, 0);
+            map.put(key, map.get(key) + amount);
+        }
+    }
+    
+    public static void printSale(HashMap<String, Integer> map){
+        for(String it : map.keySet()){
+            System.out.println(it + " : " + map.get(it));
+        }
+    }
+}
