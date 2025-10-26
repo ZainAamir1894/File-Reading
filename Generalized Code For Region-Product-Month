@@ -52,6 +52,7 @@ public class GenericFunc{
      }
    }
 
+//Generalized functions for region,product,month with a single hashmap and a key
    public static void handleSale(HashMap<String, Integer> map , String key, int amount){
       if(!map.containsKey(key)){
         map.put(key, 0);
