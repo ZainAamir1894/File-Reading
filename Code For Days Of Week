@@ -1,0 +1,76 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Scanner;
+
+
+public class DayOfWeek {
+    public static void main(String[] args) {
+
+        String filePath = "C:\\temp\\EVE01Sales.txt";
+
+
+        HashMap<String, Integer> month = new HashMap<>();
+
+        try {
+            File file = new File(filePath);
+            Scanner fileScanner = new Scanner(file);
+
+
+            if (fileScanner.hasNextLine()) {
+                fileScanner.nextLine();
+            }
+
+            while (fileScanner.hasNextLine())
+            {
+                String line = fileScanner.nextLine();
+
+                String[] parts = line.split("\\s");
+
+
+                String monthName = parts[0];
+                String day = monthName.split("-")[0];
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+//returns pattern object
+//.of(year, month, day) --> Local Date
+                LocalDate date = LocalDate.parse(monthName , formatter);
+
+
+                String dayofweek = date.getDayOfWeek().toString().substring(0,3); //returns written format, return type dayofweek obj
+                
+
+                int quantity = Integer.parseInt(parts[5]);
+                int unitPrice = Integer.parseInt(parts[6]);
+
+                int totalSale = quantity * unitPrice;
+
+
+                month.put(dayofweek, month.getOrDefault(dayofweek, 0) + totalSale);
+            }
+
+            fileScanner.close();
+
+
+            System.out.println("Total Sales by Month:");
+
+            for (String entry: month.keySet())
+            {
+                System.out.println(entry + " : " + month.get(entry));
+            }
+
+        }
+
+        catch (FileNotFoundException e)
+        {
+            System.out.println("File not found!");
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+}
