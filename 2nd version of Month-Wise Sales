@@ -1,0 +1,49 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args){
+        try{
+            File file = new File("C:\\temp\\EVE01Sales.txt");
+            Scanner sc = new Scanner(file);
+            HashMap<String, Integer> sales = new HashMap<>();
+
+            if(sc.hasNextLine()){
+                sc.nextLine();
+            }
+
+            while(sc.hasNextLine()){
+                String line = sc.nextLine().trim();
+
+                String[] fields = line.split("\t");
+                String date = fields[0];
+                int qty = Integer.parseInt(fields[4]);
+                int uPrice = Integer.parseInt(fields[5]);
+                int amount = qty * uPrice;
+
+                String[] months = {"Jun" , "Jul" , "Aug"}; //array of given months in the record
+                String month = "";
+
+                for(String m : months){ //for each month if given date contains variable for month then store it's value
+                    if(date.contains(m)){
+                        month = m;
+                        break;
+                    }
+                }
+
+                if(!month.isEmpty()){  //only calculate if month is available
+                    sales.put(month, sales.getOrDefault(month, 0) + amount);
+                }
+            }
+            sc.close();
+
+               System.out.println("Month-Wise Sales: ");
+               for(String it : sales.keySet()){
+                System.out.println(it +  " : " + sales.get(it));
+               }
+        
+        } catch(IOException e){
+            System.out.println("Error Reading File.");
+        }
+    }
+}
