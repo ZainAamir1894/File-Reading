@@ -26,6 +26,11 @@ public class Challenge {
             Scanner input = new Scanner(System.in);
             int inp = input.nextInt();
 
+            while(inp < 1 || inp > 4){
+                System.out.println("Error, incorrect option.");
+                inp = input.nextInt();
+            }
+
             while (sc.hasNextLine()) {
                 String line = sc.nextLine().trim();
 
@@ -41,7 +46,7 @@ public class Challenge {
 
             sc.close();
             input.close();
-            System.out.println("Total Sales by " + header.split("\t")[inp - 1]);
+            System.out.println("Total Sales by ");
 
             for (String it : prod.keySet()) {
                 System.out.println(it + " : " + prod.get(it));
