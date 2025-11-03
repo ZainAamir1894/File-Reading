@@ -1,0 +1,54 @@
+import java.util.*;
+import java.io.*;
+
+public class Challenge {
+
+    public static void main(String[] args) {
+        try {
+            File file = new File("C:\\temp\\EVE01Sales.txt");
+            Scanner sc = new Scanner(file);
+            HashMap<String, Integer> prod = new HashMap<>();
+
+            String header = "";
+
+            if (sc.hasNextLine()) {
+                header = sc.nextLine();
+            }
+
+            System.out.println("Choose your type to get product sales: ");
+
+
+            //For each option from the header
+            for (int sp = 0; sp < header.split("\t").length - 2; sp++) {
+                System.out.println(sp + 1 + ". " + header.split("\t")[sp]);
+            }
+
+            Scanner input = new Scanner(System.in);
+            int inp = input.nextInt();
+
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine().trim();
+
+                String[] fields = line.split("\t");
+
+                String productName = fields[inp - 1];
+                int qty = Integer.parseInt(fields[4]);
+                int uPrice = Integer.parseInt(fields[5]);
+                int amount = qty * uPrice;
+
+                prod.put(productName, prod.getOrDefault(productName, 0) + amount);
+            }
+
+            sc.close();
+            input.close();
+            System.out.println("Total Sales by " + header.split("\t")[inp - 1]);
+
+            for (String it : prod.keySet()) {
+                System.out.println(it + " : " + prod.get(it));
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error reading file");
+        }
+    }
+}
